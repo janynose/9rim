@@ -1,0 +1,306 @@
+/* mixins */
+.bb {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+body {
+    font-family: Georgia, serif;
+    min-height: 740px;
+    background: url(bg.jpg) repeat center center;
+    -webkit-font-smoothing: antialiased;
+}
+b, strong {
+    color: #cd2c2d;
+}
+a {
+    color: inherit;
+    text-decoration: none;
+    padding: 0 0.1em;
+    background: rgba(205, 44, 45, 0.09999999999999998);
+    border-radius: 0.2em;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -ms-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+a:hover {
+    background: #cd2c2d;
+    color: #fff;
+}
+/* COMMON STEP STYLES */
+.step {
+    width: 1000px;
+    height: 600px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: Georgia, serif;
+    font-size: 48px;
+    line-height: 1.5;
+}
+.step h2 {
+    text-align: center;
+    color: #cd2c2d;
+    font-size: 120px;
+    font-family: sans-serif;
+    text-transform: uppercase;
+}
+/* fade out inactive slides */
+.step {
+    -webkit-transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    -ms-transition: opacity 1s;
+    -o-transition: opacity 1s;
+    transition: opacity 1s;
+}
+.step:not(.active) {
+    opacity: 0.1;
+}
+/* STEP SPECIFIC STYLES */
+/* hint on the first slide */
+.hint {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 200px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #EEE;
+    text-align: center;
+    font-size: 50px;
+    padding: 20px;
+    z-index: 100;
+    opacity: 0;
+    -webkit-transform: translatey(400px);
+    -moz-transform: translatey(400px);
+    -ms-transform: translatey(400px);
+    -o-transform: translatey(400px);
+    transform: translatey(400px);
+    -webkit-transition: opacity 1s, -webkit-transform 0.5s 1s;
+    -moz-transition: opacity 1s, -moz-transform 0.5s 1s;
+    -ms-transition: opacity 1s, -ms-transform 0.5s 1s;
+    -o-transition: opacity 1s, -o-transform 0.5s 1s;
+    transition: opacity 1s,         transform 0.5s 1s;
+}
+.step-bored + .hint {
+    opacity: 1;
+    -webkit-transition: opacity 1s 5s, -webkit-transform 0.5s;
+    -moz-transition: opacity 1s 5s, -moz-transform 0.5s;
+    -ms-transition: opacity 1s 5s, -ms-transform 0.5s;
+    -o-transition: opacity 1s 5s, -o-transform 0.5s;
+    transition: opacity 1s 5s,         transform 0.5s;
+    -webkit-transform: translatey(0px);
+    -moz-transform: translatey(0px);
+    -ms-transform: translatey(0px);
+    -o-transform: translatey(0px);
+    transform: translatey(0px);
+}
+/* slides */
+#title .hello {
+    font-size: 64px;
+    width: 636px;
+    margin: 0 auto 1em;
+}
+#title h1 {
+    width: 636px;
+    height: 171px;
+    margin: 0 auto;
+    background: url(../img/12412.png) no-repeat center center;
+    text-indent: -999em;
+}
+#title .footnote {
+    font-size: 24px;
+    color: #333;
+    width: 636px;
+    margin: 4em auto 0;
+}
+#title .footnote span {
+    display: block;
+}
+#title .footnote span + span {
+    color: #666;
+}
+#its {
+    text-align: center;
+    font-size: 64px;
+    padding-top: 1em;
+}
+#its b {
+    display: block;
+}
+#experience {
+    text-align: center;
+}
+#experience b {
+    display: block;
+    font-size: 100px;
+}
+#level p {
+    width: 50%;
+    margin: 2em auto;
+    text-align: center;
+}
+#work img {
+    border: 20px solid rgba(102, 102, 102, 0.6);
+    border-radius: 10px;
+    -webkit-transform: rotate(1deg);
+}
+#putting span {
+    font-size: 20px;
+    line-height: 1;
+    display: block;
+}
+#putting p {
+    margin-bottom: 0;
+}
+#missing img {
+    margin-left: 300px;
+    margin-top: 92px;
+    -webkit-transform: translatez(300px);
+}
+#theme img {
+    position: absolute;
+    top: 160px;
+    border: 20px solid rgba(102, 102, 102, 0.6);
+    border-radius: 10px;
+}
+#theme div {
+    position: relative;
+}
+#theme div span {
+    font-size: 20px;
+    line-height: 1;
+    display: block;
+}
+#theme div p {
+    margin-bottom: 0;
+}
+#designed img {
+    float: left;
+    margin: 20px 30px 0 0;
+    border: 20px solid rgba(102, 102, 102, 0.6);
+    border-radius: 10px;
+}
+#generated p {
+    width: 75%;
+    margin: 2em auto 1em;
+    text-align: center;
+}
+#generated img {
+    -webkit-transform: rotatex(45deg);
+    display: block;
+    margin: 0 auto;
+    border: 20px solid rgba(205, 44, 45, 0.6);
+    border-radius: 10px;
+}
+#open p {
+    margin-bottom: 0;
+}
+#open span {
+    font-size: 20px;
+    line-height: 1;
+    display: block;
+    margin-bottom: 60px;
+}
+#open img {
+    display: block;
+}
+#positive img {
+    border: 20px solid rgba(102, 102, 102, 0.6);
+    border-radius: 10px;
+    -webkit-transform: rotate(1deg);
+}
+#number p {
+    width: 75%;
+    margin: 30px auto;
+}
+#number img {
+    position: absolute;
+    top: 135px;
+    left: 80px;
+    opacity: 0.7;
+}
+#join {
+    text-align: center;
+}
+#join p {
+    color: #cd2c2d;
+    margin-top: 4em;
+    font-weight: bold;
+}
+#final {
+    text-align: center;
+    padding-top: 3em;
+}
+/* overview step */
+#overview {
+    z-index: -1;
+    padding: 0;
+}
+/* on overview step everything is visible */
+#impress.step-overview .step {
+    opacity: 1;
+    cursor: pointer;
+}
+/* IMPRESS NOT SUPPORTED STYLES */
+.fallback-message {
+    font-family: sans-serif;
+    line-height: 1.3;
+    display: none;
+    width: 780px;
+    padding: 10px 10px 0;
+    margin: 20px auto;
+    border-radius: 10px;
+    border: 1px solid #E4C652;
+    background: #EEDC94;
+}
+.fallback-message p {
+    margin-bottom: 10px;
+}
+.impress-not-supported .step {
+    position: relative;
+    opacity: 1;
+    margin: 20px auto;
+}
+.impress-not-supported .fallback-message {
+    display: block;
+}

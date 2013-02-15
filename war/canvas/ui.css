@@ -1,0 +1,25 @@
+.canvas {
+    border: 10px solid #f08080;
+    border-radius: 10px;
+    /*width: 500px;*/
+    /*height:500px;*/
+
+    /*transition: all 1s;*/
+    /*-moz-transition: width 1s;*/
+    /*-webkit-transition: width 1s;*/
+    /*-o-transition: width 1s;*/
+}
+.toolbar {
+    float: left;
+    width: 200px;
+}
+#myImg {
+    display: none;
+}
+.chartWrap {
+    float: right;
+    display: inline-block;
+}
+.chartWrap div {
+    width:600px;
+}

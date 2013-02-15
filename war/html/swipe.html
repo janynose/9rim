@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mobile Page</title>
+</head>
+<body>
+
+<script type="text/javascript">
+(function($) {
+
+    $ = function() {
+        var arg1 = arguments[0],
+            type = typeof arg1,
+            dom = null;
+
+        if (type === "string") {
+            dom = this.find(arg1);
+        } else if (type == "object" && arg1.nodeName === "string") {
+            dom = arg1;
+        }
+        this.dom = dom;
+        return this;
+    };
+    var _pro = $.prototype;
+
+    _pro.on = function() {
+        var fn = arguments[arguments.length -1],
+            type = arguments[arguments.length - 2],
+            el = arguments.length > 2 ? arguments[0] : this.dom;
+
+        if (document.addEventListener) {
+            el.addEventListener(type, fn ,false);
+        } else {
+            el.attachEvent("on" + type, fn);
+        }
+        return this;
+    };
+
+    _pro.find = function(selector) {
+        if (selector.indexOf("#") === 0) {
+            var id = selector.substr(1, selector.length - 1);
+            return document.getElementById(id);
+        }
+    };
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="http://icon.daum-img.net/top/2010/logo.gif"/>
+<title>dev2 version</title>
+<link rel="stylesheet" type="text/css" href="http://pimg.daum-img.net/MOBILE-CSS/iphone.css?v=2.3"/>
+<!-- daum mobile editor -->
+<script language="javascript" type="text/javascript" src="/me/deveditor/js/editor.js"></script>
+<link rel="stylesheet" href="/me/deveditor/css/editor.css" type="text/css"  charset="utf-8"/>
+<!-- daum mobile editor -->
+<script type="text/javascript">
+	function makeAutoSaveMate() { 
+		return {
+			'title': function() {
+				var _el = document.getElementById("articleTitle"); // 각 게시판의 제목 텍스트박스 엘리먼트
+				return _el.value || "제목없음";
+			}()
+		};
+	}
+	
+	function isValidForm() {
+		return true;
+	}
+	
+	function createFormField(content, attachments) {
+		/* 
+		 * attachments json
+		{ 
+			type: "img",
+			fileName: fname,
+			imageUrl: url,
+			thumUrl: img.src
+		}
+		<input type="hidden" name="fileType" value="img">
+		<input type="hidden" name="fhandle" value="http://cfile163.uf.daum.net/image/185F4C194C0C53F269696C">
+		<input type="hidden" name="fileName" value="etc_16.gif">
+		<input type="hidden" name="size" value="390">
+		*/
+		form.content.value = content;
+		var datafileDiv = document.getElementById("datafile");
+		var field = "";
+		attachments.each(function(attachment) {
+			if (attachment.type == "img") {
+				field += '<input type="hidden" name="fileType" value="img">';
+				field += '<input type="hidden" name="fhandle" value="' + attachment.imageUrl + '">';
+				field += '<input type="hidden" name="fileName" value="' + attachment.fileName + '">';
+				field += '<input type="hidden" name="thumUrl" value="' + attachment.thumUrl + '">';
+				field += '<input type="hidden" name="size" value="' + attachment.size + '">';
+			}
+		});
+		datafileDiv.innerHTML = field;
+		return true;
+	}
+	
+</script>
+</head>
+<body>
+<textarea id="modifyContent" style="display:none">$!request.getParameter("modifyContent")</textarea>
+<div id="mobileWrap">
+	<div id="topWrap2">
+		<div id="gnbLogoNav2">
+			<h1>
+				<a href="http://m.daum.net/?nil_top=mini" class="daum" title="다음 모바일화면">Daum</a>
+				<a href="/" class="blog_logo" title="Daum블로그">블로그</a>
+			</h1>
+
+			<div id="personalBlogTit">
+			<h2>
+				<a href="/hopeserver" class="tit">그녀는 희망서버운영자 ☆</a>
+			</h2>
+			</div>
+					</div>
+		<hr />
+
+	</div><!-- topWrap End -->
+	<hr />
+
+<div class="articleRegist" id="contentsWrap">
+		<div class="title">
+			<h3>글쓰기</h3>
+			<a onclick="document.location.reload()">새로고침</a> | <input type="submit" value="등록" class="regist">
+			<a title="취소" onclick="history.back(); return false;" href="#" class="cancel"></a>			
+		</div>
+		<input type="hidden" value="T1hSVYSPk4xXWV9dXV1hXmJgaWNm" name="dummy">
+		<input type="hidden" value="N" name="saveWriteRules">
+		
+<!-- 모바일 웹 에디터 시작 -->
+<div style="margin:0;">
+	<style>
+		.articleRegist input#articleTitle {
+			border: 1px solid rgb(136, 136, 136);
+			-webkit-appearance:textfield;
+			-webkit-border-radius: 5px;
+			padding:3px;
+			height: 21px;
+			vertical-align: middle;
+			width:302px;
+		}
+		div.editorWrap .txt_input { border:1px solid #888888; }
+		.portrait .articleRegist input#articleTitle {width:300px;}
+		.landscape .articleRegist input#articleTitle {width:460px;}
+	</style>
+	<input type="text" name="articleTitle" id="articleTitle" class="txt_input" autocorrect="off" autocapitalize="off" />
+	<textarea name="article" id="article" class="txt_input"></textarea>
+</div>
+<!-- 모바일 웹 에디터 끝 -->		
+		<div>
+			<label>카테고리</label>
+			<select onchange="onChangeCategory()" name="categoryID" id="categoryID">
+				<option value="0">카테고리 선택</option>
+            																			<option class="open_N" value="679107">
+								에디터 테스트
+							</option>
+					            				</select>
+		</div>
+		<div>
+			<label>공개설정</label>
+			<a href="#options" onclick="toggleOptions();" class="btnOption">변경</a>
+			<div style="position: absolute;" id="options">
+				<h4>공개설정 변경</h4>
+				<div>
+					<h5>글</h5>
+					<input type="radio" value="B0301" onclick="onChangeArticleOpen()" onchange="onChangeArticleOpen(); return false" name="articleOpen" id="articleOpen1"> <label for="articleOpen1">전체</label>
+					<input type="radio" checked="checked" value="B0302" onclick="onChangeArticleOpen()" onchange="onChangeArticleOpen(); return false" name="articleOpen" id="articleOpen2"> <label for="articleOpen2">친구</label>
+					<input type="radio" value="B0303" onclick="onChangeArticleOpen()" onchange="onChangeArticleOpen(); return false" name="articleOpen" id="articleOpen3"> <label for="articleOpen3">비공개</label>
+				</div>
+				<div>
+					<h5>댓글</h5>
+					<input type="radio" value="B0401" onclick="updateStatus()" onchange="updateStatus(); return false" name="commentOpen" id="commentOpen1"> <label for="commentOpen1">전체</label>
+					<input type="radio" checked="checked" value="B0402" onclick="updateStatus()" onchange="updateStatus(); return false" name="commentOpen" id="commentOpen2"> <label for="commentOpen2">로그인</label>
+					<input type="radio" value="B0403" onclick="updateStatus()" onchange="updateStatus(); return false" name="commentOpen" id="commentOpen3"> <label for="commentOpen3">등록후 승인</label>
+					<input type="radio" value="B0404" onclick="updateStatus()" onchange="updateStatus(); return false" name="commentOpen" id="commentOpen4"> <label for="commentOpen4">비공개</label>
+				</div>
+				<div>
+					<h5>스크랩</h5>
+					<input type="radio" value="B0701" onclick="updateStatus()" onchange="updateStatus(); return false" name="scrapPrmtKind" id="scrapPrmtKind1"> <label for="scrapPrmtKind1">허용</label>
+					<input type="radio" value="B0702" onclick="updateStatus()" onchange="updateStatus(); return false" name="scrapPrmtKind" id="scrapPrmtKind2"> <label for="scrapPrmtKind2">일부 허용</label>
+					<input type="radio" checked="checked" value="B0703" onclick="updateStatus()" onchange="updateStatus(); return false" name="scrapPrmtKind" id="scrapPrmtKind3"> <label for="scrapPrmtKind3">금지</label>
+				</div>
+				<div>
+					<h5>엮인글</h5>
+					<input type="radio" value="Y" name="trackBackPrmt" id="trackBackPrmt1"> <label for="trackBackPrmt1">허용</label>
+					<input type="radio" checked="checked" value="N" name="trackBackPrmt" id="trackBackPrmt2"> <label for="trackBackPrmt2">금지</label>
+				</div>
+				<div>
+					<h5>검색</h5>
+					<input type="radio" value="Y" name="searchPrmt" id="searchPrmt1" disabled=""> <label for="searchPrmt1">허용</label>
+					<input type="radio" checked="checked" value="N" name="searchPrmt" id="searchPrmt2"> <label for="searchPrmt2">금지</label>
+				</div>
+				<a class="btn_ok" href="javascript:toggleOptions()">확인</a>
+			</div>
+		</div>
+		<div id="status"><label>글</label> : 친구&nbsp;&nbsp;<label>댓글</label> : 로그인&nbsp;&nbsp;<label>스크랩</label> : 금지</div>
+		<div class="registButtons">
+			<!-- 등록시 서버로 전송할 내용을 아래의 폼의 자식폼으로 추가한 후 서버로 값을 전달(function createFormField를 구현). 
+				에디터 영역 전체를 form 으로 감싸면 아이폰에서 키보드의 엔터키가 "이동"또는 "GO"로 표시되므로 주의한다.-->
+			<form action="view.html?modify=available" method="post" name="dataInfo" id="dataInfo">
+				<input type="button" value="등록" class="regist">
+				<a href="javascript:history.back()" class="cancel">취소</a>
+				<input type="hidden" name="content" value="" />
+				<div id="datafile" name="datafile"></div>
+			</form>
+			<!-- 자동저장 폼 -->
+			<form action="" target="autosaveFrame" method="post" id="autosaveForm">
+				<input type="hidden" name="service" value="" />
+				<input type="hidden" name="filename" value="" />
+				<input type="hidden" name="asid" value="" />
+				<input type="hidden" name="type" value="" />
+				<input type="hidden" name="seq" value="" />
+				<input type="hidden" name="meta" value="" />
+				<input type="hidden" name="contents" value="" />
+			</form>
+			<iframe name="autosaveFrame" style="width:10px;height:10px;"></iframe>
+		</div>
+</div>
+
+<hr/>
+<a id="viewSource" onclick='javascript:document.getElementById("source").value = document.getElementById("panel").innerHTML.trim();' style="margin:6px;text-decoration:underline;">SHOW HTML</a>
+<textarea name="source" id="source" rows="10" style="width:290px;font-size:12pt"><span>가나다라&nbsp;</span><img src="http://icon.daum-img.net/top/2010/logo2010.gif" width="120" height="120" style="border:1px solid black"/></textarea>
+<!--에디터 로딩 스크립트-->
+<script type="text/javascript">
+	new Editor({
+		formId: "dataInfo",
+		textareaId: "article",
+		autosave: {
+			service:"miznet",
+			filename: "miznet_MC001_",
+			asid: "miznet_MC001_",
+			seq: 2
+		}
+	});
+	
+	#if($request.getParameter("mode") == "modify")
+		Editor.modify({
+			content: "<p><span>내용</span><a href='http://www.daum.net'>www.daum.net</a><img src='http://uf-test.hosts.daum.net/R120x120/03126A014C06161821B58D'/></p>",
+			attachments: [{attacher: "image", filename: "blue.gif", imageurl: "http://cfile163.uf.daum.net/image/185F4C194C0C53F269696C", thumurl: "http://uf-test.hosts.daum.net/R120x120/03126A014C06161821B58D"}]
+		});
+	#end
+	#if($request.getParameter("backup") == "true")
+		Editor.recover();
+	#end
+	document.getElementById("articleTitle").value = document.location.href;
+/* //modify text && image 첨부 테스트
+	Bronto.Editor.modify({
+		content:"<p><span>안녕하세요&nbsp;</span><span>이가영입니다.</span></p>"
+	});
+	var panel = document.getElementById("panel");
+	var data = {
+				fname: "jany.jpg",
+				url: "http://uf-test.hosts.daum.net/R120x120/03126A014C06161821B58D",
+				size: 100
+			};
+	setTimeout(function(){
+		Bronto.Tool.ImageAttacher.onPasteImage(null, data);
+	},2000);
+*/
+
+</script>
+
+<style type="text/css">
+/* 공통 style */
+a.round {border:1px solid #AAA;-webkit-border-radius:3px;border-radius:3px;padding:1px;font-size:15px;display:inline-block;text-decoration:none;}
+a.round span {-webkit-border-radius:3px;border-radius:3px;display:inline-block;width:100%;height:100%;text-align:center;vetical-align:middle;}
+.btn_cancel {
+    width:50px;height:25px; line-height:27px;
+    border:0 none;
+    background-color:#FFF;
+}
+.btn_cancel span {
+    color:#000;
+    -webkit-box-shadow:inset 1px 1px 1px rgba(255,255,255,0.03), inset -1px -1px 1px rgba(255,255,255,0.03);/* ?? */
+    background:-webkit-gradient(linear, left top, left bottom,
+        from(#F5F5F5),
+        to(#FFF)
+    );
+    background-color:#FFF;
+   
+}
+.btn_cancel span span {
+ 	-webkit-box-shadow:none;
+    display:block;
+}
+</style>
+<a href="#" class="round btn_cancel"><span><span>취소</span></span></a>
+</body>
+</html>

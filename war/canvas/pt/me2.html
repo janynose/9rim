@@ -1,0 +1,416 @@
+<!doctype html>
+
+
+<!--
+    
+    So you'd like to know how to use impress.js?
+    
+    You've made the first, very important step - you're reading the source code.
+    And that's how impress.js presentations are built - with HTML and CSS code.
+    
+    Believe me, you need quite decent HTML and CSS skills to be able to use impress.js effectively.
+    And what is even more important, you need to be a designer, too, because there are no default
+    styles for impress.js presentations, there is no default or automatic layout for them.
+    
+    You need to design and build it by hand.
+    
+    So...
+    
+    Would you still like to know how to use impress.js?
+    
+-->
+
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Image processing on a Canvas Element</title>
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <link href="css/me.css" rel="stylesheet" />
+    
+    <link rel="shortcut icon" href="favicon.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+</head>
+
+<!--
+    
+    Body element is used by impress.js to set some useful class names, that will allow you to detect
+    the support and state of the presentation in CSS or other scripts.
+    
+    First very useful class name is `impress-not-supported`. This class means, that browser doesn't
+    support features required by impress.js, so you should apply some fallback styles in your CSS.
+    It's not necessary to add it manually on this element. If the script detects that browser is not
+    good enough it will add this class, but keeping it in HTML means that users without JavaScript
+    will also get fallback styles.
+    
+    When impress.js script detects that browser supports all required features, this class name will
+    be removed.
+    
+    The class name on body element also depends on currently active presentation step. More details about
+    it can be found later, when `hint` element is being described.
+    
+-->
+<body class="impress-not-supported">
+
+<!--
+    For example this fallback message is only visible when there is `impress-not-supported` class on body.
+-->
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div id="impress">
+    <!--<div id="test" class="step">-->
+        <!--<h1>This <b>si</b> h1</h1>-->
+        <!--<h2>This is h2</h2>-->
+        <!--<p>This is Paragraph...~ 한글?? <code>var i;</code></p>-->
+        <!--<p><pre class="border">For the best experience please use the latest <b>Chrome</b>asdf</pre></p>-->
+    <!--</div>-->
+
+    <div id="title" class="step slide" data-x="-1500" data-y="-1500">
+        <p>'<span class="strike">Canvas Image viewer</span>?' as a title? <em>Not really.</em></p>
+        <h2><b>"Pixel manipulation with &lt;canvas&gt; element"</b></h2>
+        <p>is more appropriate :)</p>
+    </div>
+
+    <div id="index" class="step index" data-x="0" data-y="-1500">
+        <ol>
+            <li>Handling &lt;image&gt; on a &lt;canvas&gt;</li>
+            <ol class="sub">
+                <li>image loading on a canvas</li>
+                <li>getting image data</li>
+            </ol>
+            <li>Novice Image Processing</li>
+                <ol class="sub">
+                    <li>pixel manipulation</li>
+                    <li>color histogram</li>
+                    <li>Filters</li>
+                    <ul>
+                        <li>brightness</li>
+                        <li>sephia</li>
+                        <li>grayscale</li>
+                        <li>shapen, blur (pixel group processing)</li>
+                    </ul>
+                </ol>
+            <!--<li>Code review</li>-->
+            <!--<li>miscellangeous</li>-->
+            <!--<ol class="sub">-->
+                <!--<li>Library</li>-->
+                <!--<li>Cross origin policy</li>-->
+                <!--<li>Tool</li>-->
+                <!--<li>recalling</li>-->
+            <!--</ol>-->
+        </ol>
+    </div>
+
+    <div id="startTitle"  class="step" data-x="-1500" data-y="0">
+        <p>Start!</p>
+        <h1>Image Loading</h1>
+        <p> + canvas API related with image.</p>
+    </div>
+
+    <div id="drawFirst" class="step" data-x="0" data-y="0">
+        <h4>To draw an image on canvas element,</h4>
+        <h4>use <b>drawImage()</b> method of context.</h4>
+        <pre><code>
+var canvas = $("myCanvas");
+var <b>context</b> = <b>canvas.getContext("2d");</b>
+var img = new Image();
+
+img.onload = function() {
+    <b>context.drawImage(img, img.width, img.height);</b>
+};
+
+imageObj.src = "dog.jpg";</code>
+    </pre>
+    </div>
+
+    <div id="imageData" class="step imageData" data-x="1500" data-y="0">
+        <h4>To get pixel data,</h4>
+        <h4>use <b>getImageData()</b> method of context.</h4>
+        <pre><code>var imageData = context.getImageData(left, top, w, h);</code></pre>
+        <p>
+        <h4><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#imagedata"><code>ImageData</code></a> object:</h4>
+        <ul>
+            <li><b><code>data</code></b>: <em>CanvasPixelArray</em> <span>A CanvasPixelArray object containing the image data. </span></li>
+            <li><b><code>height</code></b>: <em>359</em> <span>The height of the image in pixels; this is a read only unsigned long.</span></li>
+            <li><b><code>width</code></b>: <em>269</em> <span>The width of the image in pixels; this is a read only unsigned long.</span></li>
+        </ul>
+        </p>
+    </div>
+
+    <div id="putImage" class="step imageData" data-x="3000" data-y="0">
+        <h4>use <b>putImageData()</b> method of context to paint pixel data into a context.</h4>
+        <pre><code>context.putImageData(imageData, 0, 0);</code></pre>
+        <pre><code>
+copyToOtherCanvas = function(data) {
+    var newPanel = document.createElement("canvas");
+    newPanel.width = this.panel.width;
+    newPanel.height = this.panel.height;
+    var newCtx = newPanel.getContext("2d");
+    <b>newCtx.putImageData(data, 0, 0);</b>
+    document.body.appendChild(newPanel);
+};
+        </code></pre>
+    </div>
+
+    <div id="tip1" class="step" data-x="4500" data-y="0">
+        <h4><em>Tip 1.</em> Resize &lt;canvas&gt; before draw an image.</h4>
+        <pre><code>
+var canvas = $("myCanvas");
+var context = canvas.getContext("2d");
+var img = new Image();
+
+img.onload = function() {
+    <b>canvas.width = img.width;
+    canvas.height = img.height;</b>
+    context.drawImage(img, img.width, img.height);
+};
+
+imageObj.src = "dog.jpg";</code>
+    </pre>
+    </div>
+    <div id="tip2" class="step" data-x="6000" data-y="0">
+        <h4><em>Tip 2.</em> You can get DataURL of image.</h4>
+        <pre><code>
+var canvas = $("myCanvas");
+<span>//...</span>
+var img = $("myImg");
+img.src = canvas.toDataURL();
+<span>// "data:image/png;base64,iVBORw0K..."</span>
+</code>
+    </pre>
+    </div>
+    <div id="crossOrigin" class="step" data-x="7500" data-y="0">
+        <h4><em>Tip 3.</em> Must follow '<a target="_blank" href="http://en.wikipedia.org/wiki/Same_origin_policy">Same Origin Policy</a>'.</h4>
+        <p>context.getImageData()
+            <b>ctx.getImageData Unable to get image data from <u>canvas because the canvas has been tainted by cross-origin data.</u></b>
+        </p>
+        <p>toDataURL()<br/>
+            <b>canvas.toDataURL Error: SECURITY_ERR: DOM Exception 18</b>
+        </p>
+    </div>
+
+
+    <!--<div class="step" style="font-size: 24px" data-x="3000">-->
+    <!--<p>Creating an ImageData object</p>-->
+    <!--<code>var myImageData = context.createImageData(cssWidth, cssHeight);</code>-->
+    <!--<code>var myImageData = context.createImageData(anotherImageData);</code>-->
+
+    <!--<p>Getting the pixel data for a context</p>-->
+    <!--<code>var myImageData = context.getImageData(left, top, width, height);</code>-->
+
+    <!--<p>Painting pixel data into a context</p>-->
+    <!--<code>context.putImageData(myImageData, dx, dy);</code>-->
+    <!--</div>-->
+
+    <div id="end1" class="step" data-x="9000" data-y="0">
+        <p>moving on to the next...</p>
+    </div>
+
+    <div id="index2" class="step index" data-x="0" data-y="2000" data-z="700">
+        <ol>
+            <li>Handling &lt;image&gt; on a &lt;canvas&gt;</li>
+            <ol class="sub">
+                <li>image loading on a canvas</li>
+                <li>getting image data</li>
+            </ol>
+            <li class="active">Novice Image Processing</li>
+            <ol class="sub active">
+                <li><b>pixel manipulation</b></li>
+                <li>color histogram</li>
+                <li>Filters</li>
+                <ul>
+                    <li>brightness</li>
+                    <li>sephia</li>
+                    <li>grayscale</li>
+                    <li>shapen, blur (pixel group processing)</li>
+                </ul>
+            </ol>
+        </ol>
+    </div>
+    <div id="pixel" class="step" data-x="900" data-y="2000" data-z="300">
+        <h2>Pixel manipulation?</h2>
+        <p><em>prerequisites:</em><br>we should understand how it stored as a data..</p>
+    </div>
+
+    <div id="pixelDesc" class="step" data-x="1200" data-y="2000" data-z="-1000">
+        <h4>How the pixels look:</h4>
+        <table>
+            <tr><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+            <tr><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td></tr>
+            <tr><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td></tr>
+            <tr><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td></tr>
+        </table>
+        <h4>How the pixels are stored:</h4>
+        <table>
+            <tr>
+                <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td>
+                <td>9</td><td>10</td><td>11</td><td>12</td><td>.</td><td>.</td><td>.</td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="codingPixel" class="step" data-x="1500" data-y="2200" data-z="-4000">
+        <ol>
+            <li>Assume a image with a given WIDTH and HEIGHT.</li>
+            <li>We then know the pixel array has a total number of elements equaling WIDTH * HEIGHT.</li>
+            <li>For any given X, Y point in the window, the location in our 1 dimensional pixel array is: </li>
+        </ol>
+        <div class="table">
+            <div class="ver">
+                <div><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span></div>
+            </div>
+            <div class="right">
+                <div class="hor">
+                    <div><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span></div>
+                </div>
+                <table>
+                    <tr>
+                        <td>0</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>4</td>
+                    </tr><tr>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                    </tr><tr>
+                        <td>10</td>
+                        <td>11</td>
+                        <td>12</td>
+                        <td style="background-color: yellow;"><b>13</b></td>
+                        <td>14</td>
+                    </tr><tr>
+                        <td>15</td>
+                        <td>16</td>
+                        <td>17</td>
+                        <td>18</td>
+                        <td>19</td>
+                    </tr><tr>
+                        <td>20</td>
+                        <td>21</td>
+                        <td>22</td>
+                        <td>23</td>
+                        <td>24</td>
+                    </tr>
+                </table>
+                <span class="hor wid">width = 5</span>
+            </div>
+        </div>
+        <p>Pixel 13 has an <span>x value of 3</span> and <span>y value of 2</span>.</p>
+        <p class="equation" style="padding-left: 50px;">
+            &nbsp;&nbsp;&nbsp;&nbsp;x + (y * width)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;= 3 + (2 * 5)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;= 3 + 10<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;= 13<br>
+        </p>
+        <p>HTML canvas:</p>
+        <p class="equation">
+            &nbsp;&nbsp;&nbsp;&nbsp;x <b>* 4</b> + y * <b>width * 4</b> <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;3 * 4 + 2 * 5 * 4 = 52 <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;4 * (x + y * width)
+        </p>
+    </div>
+
+    <!--<div id="imageData2" class="step imageData" data-x="1500" data-y="0">-->
+        <!--<h4>To get pixel data,</h4>-->
+        <!--<h4>use <b>getImageData()</b> method of context.</h4>-->
+        <!--<pre><code>var imageData = context.getImageData(left, top, w, h);</code></pre>-->
+        <!--<p>-->
+        <!--<h4><a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/the-canvas-element.html#imagedata"><code>ImageData</code></a> object:</h4>-->
+        <!--<ul>-->
+            <!--<li><b><code>data</code></b>: <em>CanvasPixelArray</em> <span>A CanvasPixelArray object containing the image data. </span></li>-->
+            <!--<li><b><code>height</code></b>: <em>359</em> <span>The height of the image in pixels; this is a read only unsigned long.</span></li>-->
+            <!--<li><b><code>width</code></b>: <em>269</em> <span>The width of the image in pixels; this is a read only unsigned long.</span></li>-->
+        <!--</ul>-->
+        <!--</p>-->
+    <!--</div>-->
+
+    <div id="canvasPixel" class="step" data-x="3000" data-y="2200" data-z="-4000">
+        <p>The <a title="CanvasPixelArray" rel="internal" href="https://developer.mozilla.org/en/DOM/CanvasPixelArray"><code>CanvasPixelArray</code></a> object can be accessed to look at the raw pixel data; each pixel is represented by <span>four one-byte values</span> (<span>red, green, blue, and alpha, in that order</span>; that is, "RGBA"&nbsp;format). Each color component is represented by an integer <span>between 0 and 255</span>. </p>
+        <p>The <a title="CanvasPixelArray" rel="internal" href="https://developer.mozilla.org/en/DOM/CanvasPixelArray"><code>CanvasPixelArray</code></a> contains <span><code>height</code> x <code>width</code> x 4 bytes</span> of data, with index values ranging from <span>0</span> to <span>(<code>height</code> x <code>width</code> x 4)-1</span>.</p>
+        <p>For example, to read the blue component's value from the pixel at <span>column 200</span>, <span>row 50</span> in the image, you would do the following:</p>
+        <pre><code>blueComponent = imageData.data[((50*(imageData.width*4)) + (200*4)) + 2];</code></pre>
+        <p>You may access the size of the pixel array in bytes by reading the CanvasPixelArray.length attribute:</p>
+        <pre><code>var numBytes = imageData.data.length;</code></pre>
+    </div>
+
+    <div id="histogram" class="step" data-x="4500" data-y="2200" data-z="-4000">
+        <h4>Color histogram</h4>
+        <p class="desc"> a color histogram is a representation of the distribution of colors in an image. For digital images, a color histogram represents the number of pixels that have colors in each of a fixed list of color ranges, that span the image's color space, the set of all possible colors.</p>
+        <img src="../../data/histo.png" alt="histogram example" width="400px" height="370px">
+    </div>
+
+    <div id="histogramCode" class="step" data-x="5000" data-y="2200" data-z="-4000">
+        <h4>Demo....</h4>
+        <img style="margin:0" src="../../data/codeHisto.png"/>
+    <div>
+
+    <div id="gg" class="step" data-x="5000" data-y="3000" data-rotate="100">
+        <h4>Greyscale</h4>
+        <p>grey? <span style="color:#eee">#eee</span> <span style="color:#aaa">#aaa</span> <span style="color:#7C7C7C">#7C7C7C</span> <span style="color:#999">#999</span></p>
+    </div>
+
+    <div id="greyMath" class="step" data-x="10000" data-y="4000">
+        <p><code>gray = (Red + Green + Blue) / 3</code></p>
+        <p><code>Y = Red * 0.2126 + Geeen * 0.7152 + Blue * 0.0722</code></p>
+        <p><code>Y = Red * 0.299 + Green * 0.587  + Blue * 0.114</code></p>
+
+        <p>Y is brightness</p>
+
+        <dl>
+            <dt># other models</dt>
+            <dd>HSL = Hue, Saturation, Lighness</dd>
+            <dd>HSV = Hue, Saturation, Value ( or HSB = Hue, Saturation, Brightness )</dd>
+            <dd>HSI = Hue, Saturation, Intensity</dd>
+        </dl>
+        <p> L, B, V, I means 'Brightness(luminance)'</p>
+
+        <p>when calculate RGB to HSL, HSV(HSB), HSI use brightness translate formula:</p>
+        <code>
+            L = ( Max(R,G,B)  + MIN(R,G,B) ) / 2 <br>
+            V(B) = Max(R, G, B) <br>
+            I = ( R + G + B ) / 3
+        </code>
+    </div>
+
+    <!--<div class="step" data-x="12000" data-y="4000">-->
+        <!--<h1>Black&White (binary image)</h1>-->
+        <!--<code>data[offset] = data[offset+1] = data[offset+2] = ave > 100 ? 255 : 0;</code>-->
+    <!--</div>-->
+
+    <!--<div class="step" data-x="14000" data-y="4000">-->
+        <!--<h1>brighter</h1>-->
+        <!--<code>data[x] += brightness;</code>-->
+    <!--</div>-->
+
+    <!--<div id="colorModel" class="step"  data-x="7000" data-y="2000">-->
+        <!--<h1>Color model</h1>-->
+        <!--<p><b>RGB</b>, Gray, CMY, CMYK, HSI, HSV, YCbCr, YIQ, YUV</p>-->
+    <!--</div>-->
+    <!--<div class="step" data-x="9000" data-y="2000">-->
+        <!--<h1>Image Processing <em>novice :)</em></h1>-->
+    <!--</div>-->
+
+
+    <div id="overview" class="step" data-x="500" data-y="2000" data-z="-3500" data-scale="5">
+    </div>
+</div>
+
+
+
+
+<script src="js/impress.js"></script>
+<script>impress().init();</script>
+
+</body>
+</html>
+

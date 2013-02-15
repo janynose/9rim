@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Play with canvas.</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../bootstrap/css/prettify.css">
+    <link rel="stylesheet" href="dot.css">
+    <!--<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>-->
+</head>
+<body>
+<div class="bodyWrap">
+<h1>Image on Canvas</h1>
+    <div class="content">
+        <ul class="thumbnails">
+            <li><img src="img/sunflower.jpg" width="50  " height="40" alt=""></li>
+            <li><img src="img/dollpuppy.png" width="50" height="40" alt=""></li>
+            <li><img src="img/bee.jpg" width="50" height="40" alt=""></li>
+            <li><img src="img/lighthouse.jpg" width="50" height="40" alt=""></li>
+            <li><img src="img/road.jpg" width="50" height="40" alt=""></li>
+            <li><img src="img/stones.jpg" width="50" height="40" alt=""></li>
+            <li><img src="img/flower.jpg" width="50" height="40" alt=""></li>
+            <li><img src="img/louvre.jpg" width="50" height="40" alt=""></li>
+        </ul>
+        <div class="panel-wrap">
+            <!--<button class="btn btn-success process-done">Success</button>-->
+            <div id="process-done" class="alert alert-success process-done">
+                Well done! You successfully completed.
+            </div>
+            <canvas id="canvas" class="canvas" width="400" height="300"></canvas>
+        </div>
+        <div class="toolbar">
+            <button id="reset" class="btn"><i class="icon-home"></i></button>
+            <button id="R" class="btn btn-danger">Red</button>
+            <button id="subR" class="btn btn-danger-less">Red</button>
+            <button id="G" class="btn btn-success">Green</button>
+            <button id="subG" class="btn btn-green-less">Green</button>
+            <button id="B" class="btn btn-primary">Blue</button>
+            <button id="subB" class="btn btn-info">Blue</button>
+
+            <button id="histogram" class="btn"><i class="icon-signal"></i> Histogram</button>
+            <button id="A" class="btn">A+</button>
+            <button id="subA" class="btn">A-</button>
+            <button id="grey4" class="btn">Grey 1</button>
+            <button id="grey" class="btn">Grey 2</button>
+            <button id="grey2" class="btn">Grey 3</button>
+            <button id="grey3" class="btn">Grey 4</button>
+            <button id="toURL" class="btn">Data URL</button>
+            <br>
+            <button id="black" class="btn"><i class="icon-adjust"></i> Binary</button>
+            <button id="bright" class="btn"><i class="icon-star-empty"></i> Brighter</button>
+            <button id="dark" class="btn"><i class="icon-star"></i> Darker</button>
+            <button id="edge" class="btn"><i class="icon-qrcode"></i> Edge</button>
+            <button id="edge2" class="btn"><i class="icon-qrcode"></i> Edge 2</button>
+            <br>
+            <button id="sharpen" class="btn"><i class="icon-picture"></i> Sharpen </button>
+            <button id="sharpen2" class="btn"><i class="icon-picture"></i> Sharpen 2 </button>
+            </pre>
+            <button id="blur" class="btn"><i class="icon-asterisk"></i> Blur</button>
+            <button id="se" class="btn"><i class="icon-tint"></i> Sephia</button>
+            <button id="emboss" class="btn"><i class="icon-asterisk"></i> Emboss</button>
+        </div>
+    </div>
+    <div class="codeWrap">
+        <pre class="prettyprint" id="detail"></pre>
+        <button class="close">&times;</button>
+    </div>
+
+<!--<div class="btn-group dropup open">-->
+  <!--<button class="btn">Dropup</button>-->
+  <!--<button class="btn dropdown-toggle" data-toggle="dropdown">-->
+    <!--<span class="caret"></span>-->
+  <!--</button>-->
+  <!--<ul class="dropdown-menu">-->
+    <!--<li>-->
+        <!--<pre>asdf</pre>-->
+    <!--</li>-->
+  <!--</ul>-->
+<!--</div>-->
+<!--<div class="well">-->
+  <!--1234 daum.addClass()-->
+<!--</div>-->
+<!--<pre class="prettyprint linenums">-->
+<!--<ol class="linenums"><li class="L0"><span class="tag">&lt;pre</span><span class="pln"> </span><span class="atn">class</span><span class="pun">=</span><span class="atv">"prettyprint</span></li><li class="L1"><span class="atv">     linenums"</span><span class="tag">&gt;</span></li><li class="L2"><span class="pln">  &amp;lt;p&amp;gt;Sample text here...&amp;lt;/p&amp;gt;</span></li><li class="L3"><span class="tag">&lt;/pre&gt;</span></li></ol>-->
+<!--</pre>-->
+<!--<img id="myImg" src="http://icon.daumcdn.net/w/c/12/03/77951173032424319.png"/>-->
+
+<div class="chartWrap well">
+    <div id="chartR"></div>
+    <div id="chartG"></div>
+    <div id="chartB"></div>
+    <button class="close">&times;</button>
+</div>
+</div>
+
+<script src="../lib/jquery.js"></script>
+<script src="edit.js"></script>
+<script type="text/javascript" src="../lib/highcharts.js"></script>
+<script>
+    var layer = new InfoLayer($("#detail"));
+    var app = new Dot();
+
+    $(".thumbnails img").click(function() {
+        app.loadImage(this.src);
+        this.style.opacity = 1;
+    }).mouseover(function() {
+        this.style.opacity = 1;
+    }).mouseout(function() {
+        this.style.opacity = 0.5;
+    });
+
+    var textarea = $("#data");
+    $("#reset").click(function() {
+        app.reset();
+    });
+    $("#R").click(function() {
+        app.addOrSubtrantChannel("r", 10);
+        $("body").hasClass("histogram") && app.histogram();
+    });
+    $("#subR").click(function() {
+        app.addOrSubtrantChannel("r", -10);
+        $("body").hasClass("histogram") && app.histogram();
+        //layer.set().fn(app.addOrSubtrantChannel.toString()).show();
+    });
+    $("#G").click(function() {
+        app.addOrSubtrantChannel("g", 10);
+        $("body").hasClass("histogram") && app.histogram();
+    });
+    $("#subG").click(function() {
+        app.addOrSubtrantChannel("g", -10);
+        $("body").hasClass("histogram") && app.histogram();
+    });
+    $("#B").click(function() {
+        app.addOrSubtrantChannel("b", 10);
+        $("body").hasClass("histogram") && app.histogram();
+    });
+    $("#subB").click(function() {
+        app.addOrSubtrantChannel("b", -10);
+        $("body").hasClass("histogram") && app.histogram();
+    });
+    $("#A").click(function() {
+        app.addOrSubtrantChannel("a", 20);
+        $("body").hasClass("histogram") && app.histogram();
+    });
+    $("#subA").click(function() {
+        app.addOrSubtrantChannel("a", -20);
+        $("body").hasClass("histogram") && app.histogram();
+    });
+    $("#grey").click(function() {
+        app.greyScale();
+        layer.set("var result = R * 0.3 + G * 0.59 + B * 0.11;\nThe human eye is bad at seeing red and blue, so we de-emphasize them.").fn(app.greyScale.toString()).show();
+    });
+    $("#grey2").click(function() {
+        app.greyScale2();
+        layer.set("var result = R * 0.3 + G * 0.59 + B * 0.11; // double loop").fn(app.greyScale2.toString()).show();
+    });
+    $("#grey3").click(function() {
+        app.greyScale3();
+        layer.set("var v = 0.2126 * r + 0.7152 * g + 0.0722 * b;").fn(app.greyScale3.toString()).show();
+    });
+    $("#grey4").click(function() {
+        app.greyScale4();
+        layer.set("(r + g + b) / 3").fn(app.greyScale4.toString()).show();
+    });
+    $("#black").click(function() {
+        app.blackAndWhite();
+        layer.set("data[offset] = data[offset+1] = data[offset+2] = ave > 100 ? 255 : 0;").fn(app.blackAndWhite.toString()).show();
+    });
+    $("#bright").click(function() {
+        app.bright();
+        layer.set("app.bright();").fn(app.bright.toString()).show();
+    });
+    $("#dark").click(function() {
+        app.bright(-10);
+        layer.set("app.bright(-10);").fn(app.bright.toString()).show();
+    });
+    $("#edge").click(function() {
+        app.edge();
+        layer.set().fn(app.edge.toString()).show();
+    });
+    $("#edge2").click(function() {
+        app.sharpen(
+                [[-1, -1, -1],
+                [-1, 8, -1],
+                [-1, -1, -1]]);
+        layer.set("[[-1, -1, -1],\n[-1, 8, -1],\n[-1, -1, -1]]")
+                        .fn(app.sharpen.toString()).show();
+    });
+    $("#sharpen").click(function() {
+        app.sharpen();
+        layer.set("[[-1, -1, -1],\n [-1, 9, -1],\n [-1, -1, -1]]")
+                        .fn(app.sharpen.toString()).show();
+    });
+    $("#sharpen2").click(function() {
+        app.sharpen(
+            [[0, -1, 0],
+            [-1, 5, -1],
+            [0, -1, 0]]);
+        layer.set("[[0, -1, 0],\n [-1, 5, -1],\n [0, -1, 0]]")
+                    .fn(app.sharpen.toString()).show();
+    });
+    $("#se").click(function() {
+        app.sephia();
+        layer.set("(R * .393) + (G *.769) + (B * .189)")
+                            .fn(app.sharpen.toString()).show();
+    });
+    $("#blur").click(function() {
+        app.sharpen([[1/9, 1/9, 1/9], [1/9, 1/9, 1/9], [1/9, 1/9, 1/9]]);
+        layer.set("[[1/9, 1/9, 1/9],\n [1/9, 1/9, 1/9],\n [1/9, 1/9, 1/9]]")
+            .fn(app.sharpen.toString()).show();
+    });
+    $("#emboss").click(function() {
+        app.sharpen(
+                [[-4, 0, 0],
+                [0, 1, 0],
+                [0, 0, 4]]);
+        layer.set("[[-4, 0, 0],\n [0, 1, 0],\n [0, 0, 4]]")
+            .fn(app.sharpen.toString()).show();
+    });
+    $("#histogram").click(function() {
+        $("body").addClass("histogram");
+        app.histogram();
+    });
+    $("#toURL").click(function() {
+        var str = app.panel.toDataURL();
+        var textarea = $('<div class="well dataUrl"><textarea style="width:100%;height:100%;">'+ str + '</textarea></div>')
+            .insertAfter(this);
+        textarea.click(function() {
+            textarea.hide();
+        });
+    });
+
+</script>
+</body>
+</html>
